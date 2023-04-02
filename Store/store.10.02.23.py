@@ -3,10 +3,22 @@ import requests
 from bs4 import BeautifulSoup
 import telebot
 from telebot.types import LabeledPrice
+import configparser
+import argparse
 
-API_KEY = "5890376662:AAFaY9EYP-Mfg5_fV2bJizn--PS881teiD0"
-PAYMENT_KEY = '5322214758:TEST:f7aa92c6-f517-49ee-bbc4-0168d44db1c9'
-database = 'C:\\sqlite\\test.db'
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('-c', '--config-file',
+                    required=True,
+                    dest='configfile',
+                    metavar='FILE',
+                    help='Config file')
+args = parser.parse_args()
+config = configparser.ConfigParser()
+config.read(args.configfile)
+
+API_KEY = config['telegram']['api_key']
+PAYMENT_KEY = config['smart_glocal_test']['payment_key']
+database = config['settings']['database']
 bot = telebot.TeleBot(API_KEY)
 
 
