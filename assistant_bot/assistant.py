@@ -3,10 +3,25 @@ import psycopg2
 from psycopg2 import sql
 import requests
 from bs4 import BeautifulSoup
+import configparser
+import argparse
 
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('-c', '--config-file',
+                    required=True,
+                    dest='configfile',
+                    metavar='FILE',
+                    help='Config file')
+args = parser.parse_args()
+config = configparser.ConfigParser()
+config.read(args.configfile)
+
+API_KEY = config['telegram']['api_key']
+PAYMENT_KEY = config['smart_glocal_test']['payment_key']
+database = config['settings']['database']
 
 # create a new bot with your API token
-bot = telebot.TeleBot('6029161135:AAGImRP25u9cJe0_T7E5MLQJ4eE_aaVg0J0')
+bot = telebot.TeleBot(API_KEY)
 
 
 def main_menu():
